@@ -65,46 +65,30 @@ def quadratic_multiply(x, y):
 
 def _quadratic_multiply(x, y):
 
+    xvec = x.binary_vec
+    yvec = y.binary_vec
+
     if x.decimal_val <= 1 and y.decimal_val <= 1:
         return x * y
 
-    x.binary_vec, y.binary_vec = pad(x.binary_vec, y.binary_vec)
+    xvec, yvec = pad(xvec, yvec)
 
-    n = len(x.binary_vec)
-    print("n: %s" % n)
+    xL, xR = split_number(xvec)
+    yL, yR = split_number(yvec)
 
-    xl, xr = split_number(x.binary_vec)
+    left = _quadratic_multiply(xL, yL)
+    right = _quadratic_multiply(xR, yR)
+    middle_left = _quadratic_multiply(xL, yR)
+    middle_right = _quadratic_multiply(xR, yL)
 
-    yl, yr = split_number(y.binary_vec)
+    middle_term = BinaryNumber(middle_left.decimal_val + middle_right.decimal_val)
+    middle_term = bit_shift(middle_term, len(xvec//2))
+    left = bit_shift(left,len(xvec))
 
-    print("X: %s" % x.binary_vec)
-    print("Y: %s" % y.binary_vec)
-    print("XL: %s" % xl.binary_vec)
-    print("XR: %s" % xr.binary_vec)
-    print("YL: %s" % yl.binary_vec)
-    print("YR: %s" % yr.binary_vec)
-    ll = _quadratic_multiply(xl, yl)
-    rr = _quadratic_multiply(xr, yr)
+    bin_multiplied = BinaryNumber(left.decimal_val + middle_term.decimal_val + right.decimal_val)
 
-    lrrl = _quadratic_multiply(xl * xr + yl * yr)
-
-    bs1 = bit_shift(BinaryNumber(2), n)
-    bs2 = bit_shift(BinaryNumber(2), n // 2)
-
-    total = bs1*ll + bs2* lrrl * rr
-
-    return total
-
-    # 2 and 2 as inputs
-    # xl = 1 xr = 0, yl = 1 yr = 0
-    # ll = 1, rr = 0, lrrl = 1+0 * 1+0 = 1
-    # n = 2
-    # 2^1 * 1 = 4
-    # 2^1 * 1 = 2
-    # rr = 0
-    # 4 + 2 + 0 = 6
-
-
+    return bin_multiplied
+  
 # Feel free to add your own tests here.
 def test_multiply():
     assert quadratic_multiply(BinaryNumber(2), BinaryNumber(2)) == 2 * 2
