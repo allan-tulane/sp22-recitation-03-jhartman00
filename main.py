@@ -82,7 +82,7 @@ def _quadratic_multiply(x, y):
     middle_right = _quadratic_multiply(xR, yL)
 
     middle_term = BinaryNumber(middle_left.decimal_val + middle_right.decimal_val)
-    middle_term = bit_shift(middle_term, len(xvec//2))
+    middle_term = bit_shift(middle_term, len(xvec)//2)
     left = bit_shift(left,len(xvec))
 
     bin_multiplied = BinaryNumber(left.decimal_val + middle_term.decimal_val + right.decimal_val)
@@ -101,6 +101,6 @@ def time_multiply(x, y, f):
 
 
 if __name__ == "__main__":
-    x = BinaryNumber(2)
-    y = BinaryNumber(3)
+    x = BinaryNumber(3)
+    y = BinaryNumber(10)
     print(_quadratic_multiply(x, y))
