@@ -97,10 +97,13 @@ def test_multiply():
 def time_multiply(x, y, f):
     start = time.time()
     # multiply two numbers x, y using function f
+    x = BinaryNumber(3)
+    y = BinaryNumber(10)
+    f(x,y)
     return (time.time() - start) * 1000
 
 
 if __name__ == "__main__":
     x = BinaryNumber(3)
     y = BinaryNumber(10)
-    print(_quadratic_multiply(x, y))
+    print(time_multiply(x, y, _quadratic_multiply))
